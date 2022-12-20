@@ -25,6 +25,7 @@
   <script src="js/playerClasses.js"></script>
   <script src="js/Pantallas.js"></script>
   <script src="js/misc.js"></script>
+  <script src="js/highScore.js"></script>
 
   <link rel="stylesheet" media="all" href="./css/stylesheet.css">
 </head>
@@ -356,7 +357,7 @@ var MainGame = new Phaser.Class({
             if(!victoryMusic.isPlaying){
                     victoryMusic.play();
             }
-            this.scene.start('BorradorVictoria');
+            this.scene.start('ResultadoVictoria');
           }
         } else {
           console.log("Derrota")
@@ -399,7 +400,7 @@ var MainGame = new Phaser.Class({
       'transparent'
     ]
   },
-    scene: [PantallaCarga, MainGame, PantallaInicio, PantallaCreditos, TwoCharacterSelect, PantallaPausa, ResultadoDerrota, BorradorVictoria]
+    scene: [PantallaCarga, MainGame, PantallaInicio, PantallaCreditos, TwoCharacterSelect, PantallaPausa, ResultadoDerrota, ResultadoVictoria]
   };
 
   var game = new Phaser.Game(config);

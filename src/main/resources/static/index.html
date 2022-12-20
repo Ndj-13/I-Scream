@@ -47,6 +47,10 @@ var nxtSound;
 var victoryMusic;
 var defMusic;
 
+const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+//localStorage.setItem("hidhScores", JSON.stringify([]));
+//console.log(JSON.parse(localStorage.getItem("highScores")));
+
 var MainGame = new Phaser.Class({
       Extends: Phaser.Scene,
 
@@ -389,7 +393,7 @@ var MainGame = new Phaser.Class({
       'transparent'
     ]
   },
-    scene: [PantallaCarga, MainGame, PantallaInicio, PantallaCreditos, TwoCharacterSelect, PantallaPausa, ResultadoDerrota, ResultadoVictoria]
+    scene: [BorradorVictoria, PantallaCarga, MainGame, PantallaInicio, PantallaCreditos, TwoCharacterSelect, PantallaPausa, ResultadoDerrota, ResultadoVictoria]
   };
 
   var game = new Phaser.Game(config);

@@ -1192,10 +1192,8 @@ class ResultadoDerrota extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        var player1T = "Player1";
-        var player2T = "Player2";
-        this.make.text(confN).setText(player1T); 
-        this.make.text(confN).setText(player2T).setPosition(500, 280);
+        this.make.text(confN).setText(player1T.value); 
+        this.make.text(confN).setText(player2T.value).setPosition(500, 280);
         //this.make.text(confN).setText(player1T.text); 
         //this.make.text(confN).setText(player2T.text).setPosition(500, 270);
         
@@ -1227,8 +1225,8 @@ class ResultadoDerrota extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confnKills).setText(player.lifeBar.kills); 
-        this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 390);
+        this.make.text(confnKills).setText(player1.lifeBar.kills); 
+        this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 340);
         
 
         //Salir
@@ -1339,6 +1337,7 @@ class ResultadoDerrota extends Phaser.Scene {
             document.body.style.cursor = "auto";
             this.scene.start('PantallaInicio');
         })
+
     }
     update(time, date)
     {
@@ -1405,8 +1404,8 @@ class ResultadoVictoria extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confN).setText(player1T.text); 
-        this.make.text(confN).setText(player2T.text).setPosition(500, 270);
+        this.make.text(confN).setText(player1T.value); 
+        this.make.text(confN).setText(player2T.value).setPosition(500, 270);
         
         //Kills
         const confKills = {
@@ -1547,9 +1546,277 @@ class ResultadoVictoria extends Phaser.Scene {
             this.no.setVisible(false).disableInteractive();
             this.salir.setInteractive();
         })
+
+        //SCORES
+        
+        const dataPlayer1 = {
+            score: player1.lifeBar.kills,
+            name: player1T
+        }
+        const dataPlayer2 = {
+            score: player2.lifeBar.kills,
+            name: player2T
+        }
+
+        //Aviso de nuevo High Score
+        HighScores.forEach(element =>{
+            if(dataPlayer1.score > element) console.log("New High Score");
+        })
     }
     update(time, date)
     {
 
+    }
+}
+
+class BorradorVictoria extends Phaser.Scene {
+    constructor(){
+        super({key: 'BorradorVictoria'});
+    }
+    preload()
+    {
+        this.load.image("escenario", 'assets/map1.png');
+        this.load.image('victoria', 'assets/interfaz/pantallaVictory.png');
+
+        //Iconos:
+        this.load.image('iconoJ1', 'assets/interfaz/cabezaMorada.png');
+        this.load.image('iconoJ2', 'assets/interfaz/cabezaAzul.png');
+
+        //Pestaña aviso
+        this.load.image('aviso', 'assets/interfaz/pestañaAviso.png');
+
+        this.load.spritesheet('yes', 'assets/interfaz/botonYes.png', { frameWidth: 120, frameHeight: 47});
+        this.load.spritesheet('no', 'assets/interfaz/botonNo.png', { frameWidth: 120, frameHeight: 47});
+
+        //x
+        this.load.spritesheet('exit',
+            'assets/interfaz/botonX.png',
+            { frameWidth: 80, frameHeight: 47 }
+        );
+    }
+    create()
+    {
+        //CREACION ESCENARIO
+        //Escenario
+        this.add.image(400, 382, 'escenario');
+        //Filtro
+        let filtro = this.add.graphics({
+            fillStyle: {
+                color: 0x5b2970, //color barra de cargar (CAMBIAR)
+                alpha: 0.2,
+            }
+        })
+        filtro.fillRect(0, 0, 800, 600);
+        //Victoria
+        this.add.image(400, 300, 'victoria').setScale(1.2);
+
+        //Iconos jugadores
+        this.add.image(300, 230, 'iconoJ1');
+        this.add.image(500, 230, 'iconoJ2');
+
+        var player1T = "Player 1";
+        var player2T = "Player 2";
+        var player1K = 30;
+        var player2K = 10;
+
+        const username = document
+        const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+        //Variables:
+        const dataPlayer1 = {
+            score: player1K,
+            name: player1T
+        }
+        const dataPlayer2 = {
+            score: player2K,
+            name: player2T
+        }
+
+        //Jugadores
+        const confN = {
+            origin: 'center',
+            x: 300,
+            y: 270,
+            style: {
+                fontFamily: 'estilo',
+                color: '#ffffff',
+                fontSize: 25,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                justifyContent: 'center',
+            }
+        }
+        this.make.text(confN).setText(player1T); 
+        this.make.text(confN).setText(player2T).setPosition(500, 270);
+        
+        //Kills
+        const confKills = {
+            origin: 'center',
+            x: 300,
+            y: 390,
+            style: {
+                fontFamily: 'estilo',
+                color: '#ffffff',
+                fontSize: 20,
+                textAlign: 'center',
+                justifyContent: 'center',
+            }
+        }
+        this.make.text(confKills).setText('Score');
+        this.make.text(confKills).setText('Score').setPosition(500, 390);
+
+        const confnKills = {
+            origin: 'center',
+            x: 300,
+            y: 340,
+            style: {
+                fontFamily: 'titulo',
+                color: '#ffffff',
+                fontSize: 25,
+                textAlign: 'center',
+                justifyContent: 'center',
+            }
+        }
+        this.make.text(confnKills).setText(player1K); 
+        this.make.text(confnKills).setText(player2K).setPosition(500, 340); 
+
+        //Salir
+        //this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
+        this.marcoOk = this.add.image(400, 450, 'marco').setVisible(false);
+        this.marcoOk.scale = 1.2;
+
+        //Pestaña confirmacion
+        const confSalir = {
+            origin: 'center',
+            x: 240,
+            y: 230,
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 25,
+                textAlign: 'center',
+                justifyContent: 'center',
+            }
+        }
+        this.pestaña = this.add.image(400, 300, 'aviso').setVisible(false);
+        this.abandonar = this.make.text(confSalir).setText(
+            '¿Volver al menú principal?').setPosition(
+                400, 230).setFontSize(25).setVisible(false);
+        //warning
+        //x
+        //this.exit2 = this.add.sprite(625, 185, "exit").setVisible(false);
+        //this.exit2.scale = 0.6;
+        //yes y no
+        this.yes = this.add.sprite(300, 350, 'yes').setVisible(false);
+        this.no = this.add.sprite(500, 350, 'no').setVisible(false);
+
+        /*
+        //FUNCIONALIDAD
+        this.salir.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+            this.marcoOk.setVisible(true);
+        })
+        this.salir.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+            this.marcoOk.setVisible(false);
+        })
+        this.salir.on("pointerdown", ()=>{
+            this.salir.setFrame(1); 
+            this.marcoOk.setVisible(false);
+        })
+        this.salir.on("pointerup", ()=>{
+            this.salir.setFrame(0);
+            document.body.style.cursor = "auto";
+            this.pestaña.setVisible(true);
+            this.abandonar.setVisible(true);
+            this.exit2.setVisible(true).setInteractive();
+            this.yes.setVisible(true).setInteractive();
+            this.no.setVisible(true).setInteractive();
+            this.salir.disableInteractive();
+        })*/
+        /*
+        //exit2
+        this.exit2.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+        })
+        this.exit2.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+        })
+        this.exit2.on("pointerdown", ()=>{
+            this.exit2.setFrame(1); 
+        })
+        this.exit2.on("pointerup", ()=>{
+            this.exit2.setFrame(0);
+            document.body.style.cursor = "auto";
+            this.pestaña.setVisible(false);
+            this.abandonar.setVisible(false);
+            this.exit2.setVisible(false).disableInteractive();
+            this.yes.setVisible(false).disableInteractive();
+            this.no.setVisible(false).disableInteractive();
+            this.salir.setInteractive();
+        })*/
+        //yes
+        this.yes.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+        })
+        this.yes.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+        })
+        this.yes.on("pointerdown", ()=>{
+            this.yes.setFrame(1); 
+        })
+        this.yes.on("pointerup", ()=>{
+            document.body.style.cursor = "auto";
+            this.scene.start("PantallaInicio");
+        })
+        //no
+        this.no.on("pointerover", ()=>{
+            document.body.style.cursor = "pointer";
+        })
+        this.no.on("pointerout", ()=>{
+            document.body.style.cursor = "auto";
+        })
+        this.no.on("pointerdown", ()=>{
+            this.no.setFrame(1); 
+        })
+        this.no.on("pointerup", ()=>{
+            this.no.setFrame(0);
+            document.body.style.cursor = "auto";
+            this.pestaña.setVisible(false);
+            this.abandonar.setVisible(false);
+            this.exit2.setVisible(false).disableInteractive();
+            this.yes.setVisible(false).disableInteractive();
+            this.no.setVisible(false).disableInteractive();
+            this.salir.setInteractive();
+        })
+
+        //SCORES
+        //Guardar Score
+        saveHighScore = e =>{
+        const score = {
+            score: mostRecentScore,
+            name: username.value
+        }
+            //Jugador 1
+            highScores.push(dataPlayer1.score);
+            //highScores.sort(a,b) => b.dataPlayer1.score - a.dataPlayer1
+            highScores.push(player)
+        }
+    }
+    update(time, date)
+    {
+
+    }
+}
+
+class HighScoresScreen extends Phaser.Scene{
+    constructor(){
+        super({key: "HighScoresScreen"});
+    }
+
+    preload()
+    {
+        //Background
+        this.load.image("bg", "assets/pantallas/highScores.png");
     }
 }

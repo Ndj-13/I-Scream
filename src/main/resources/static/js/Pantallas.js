@@ -1140,7 +1140,7 @@ class ResultadoDerrota extends Phaser.Scene {
     preload()
     {
         this.load.image("escenario", 'assets/interfaz/pantallaPausa.png');
-        this.load.image('derrota', 'assets/interfaz/pantallaDefeat.png');
+        this.load.image('derrota', 'assets/pantallas/pantallaDefeat.png');
 
         //Iconos:
         this.load.image('iconoJ1', 'assets/interfaz/cabezaMorada.png');
@@ -1154,7 +1154,7 @@ class ResultadoDerrota extends Phaser.Scene {
 
         //x
         this.load.spritesheet('exit',
-            'DiseñoInterfaz/Botones/botonX.png',
+            'assets/interfaz/botonX.png',
             { frameWidth: 80, frameHeight: 47 }
         );
     }
@@ -1162,7 +1162,7 @@ class ResultadoDerrota extends Phaser.Scene {
     {
         //CREACION ESCENARIO
         //Escenario
-        this.add.image(400, 382, 'escenario');
+        this.add.image(400, 300, 'escenario');
         //Filtro
         let filtro = this.add.graphics({
             fillStyle: {
@@ -1172,17 +1172,17 @@ class ResultadoDerrota extends Phaser.Scene {
         })
         filtro.fillRect(0, 0, 800, 600);
         //Derrota
-        this.add.image(400, 300, 'derrota').setScale(1.2);
+        this.add.image(400, 300, 'derrota').setScale(1.1);
 
         //Iconos jugadores
-        this.add.image(300, 230, 'iconoJ1');
-        this.add.image(500, 230, 'iconoJ2');
+        this.add.image(300, 240, 'iconoJ1');
+        this.add.image(500, 240, 'iconoJ2');
     
         //Jugadores
         const confN = {
             origin: 'center',
             x: 300,
-            y: 270,
+            y: 280,
             style: {
                 fontFamily: 'estilo',
                 color: '#ffffff',
@@ -1192,8 +1192,12 @@ class ResultadoDerrota extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confN).setText(player1T.text); 
-        this.make.text(confN).setText(player2T.text).setPosition(500, 270);
+        var player1T = "Player1";
+        var player2T = "Player2";
+        this.make.text(confN).setText(player1T); 
+        this.make.text(confN).setText(player2T).setPosition(500, 280);
+        //this.make.text(confN).setText(player1T.text); 
+        //this.make.text(confN).setText(player2T.text).setPosition(500, 270);
         
         //Kills
         const confKills = {
@@ -1223,7 +1227,7 @@ class ResultadoDerrota extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confnKills).setText(player1.lifeBar.kills); 
+        this.make.text(confnKills).setText(player.lifeBar.kills); 
         this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 390);
         
 

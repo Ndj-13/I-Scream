@@ -454,7 +454,7 @@ var TwoCharacterSelect = new Phaser.Class({
             this.play.setFrame(1);    
         })
         this.play.on('pointerup', ()=>{
-           this.scene.start('mainGame');
+            this.scene.start('mainGame');
             this.play.setFrame(0);
             player1T.style.visibility = "hidden";
             player2T.style.visibility = "hidden";
@@ -795,8 +795,10 @@ var OneCharacterSelect = new Phaser.Class({
             this.play.setFrame(1);    
         })
         this.play.on('pointerup', ()=>{
-            if(this.flechita.y == 500) this.scene.start('mainGame');
-            else this.play.setFrame(0);
+            this.scene.start('mainGame');
+            this.play.setFrame(0);
+            player1T.style.visibility = "hidden";
+            player2T.style.visibility = "hidden";
         })
 
         //Modos juego
@@ -1561,12 +1563,12 @@ class ResultadoVictoria extends Phaser.Scene {
 class BorradorVictoria extends Phaser.Scene {
     constructor(){
         super({key: 'BorradorVictoria'});
-        /*
-        this.player1T = "Player 1";
-        this.player2T = "Player 2";
-        this.player1K = 30;
-        this.player2K = 10;
-        */
+        
+        this.player1T = "Player 1",
+        this.player2T = "Player 2",
+        this.player1K = 30,
+        this.player2K = 10
+        
     }
     preload()
     {
@@ -1620,11 +1622,11 @@ class BorradorVictoria extends Phaser.Scene {
                 fontSize: 25,
                 fontStyle: 'bold',
                 textAlign: 'center',
-                justifyContent: 'center',
+                justifyContent: 'center'
             }
         }
-        this.make.text(confN).setText(player1T.value); 
-        this.make.text(confN).setText(player2T.value).setPosition(500, 270);
+        this.make.text(confN).setText(this.player1T); 
+        this.make.text(confN).setText(this.player2T).setPosition(500, 270);
         
         //Kills
         const confKills = {
@@ -1654,8 +1656,8 @@ class BorradorVictoria extends Phaser.Scene {
                 justifyContent: 'center',
             }
         }
-        this.make.text(confnKills).setText(player1.lifeBar.kills); 
-        this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 340); 
+        this.make.text(confnKills).setText(this.player1K); 
+        this.make.text(confnKills).setText(this.player2K).setPosition(500, 340); 
 
         //Salir
         //this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
@@ -1767,18 +1769,55 @@ class BorradorVictoria extends Phaser.Scene {
             this.salir.setInteractive();
         })
 
-        //console.log(player1T.value, player1.lifeBar.kills);
-        //localStorage.clear();
+        //SCORES
+        localStorage.clear();
+        //this.guardarHS1 = HighScoreClass
+        //this.guardarHS1.checkHighScore(this.player1T, this.player1K);
+        //this.guardarHS2 = new HighScoreClass();
+        //this.guardarHS1.checkHighScore(this.player2T, this.player2K);
+        this.highscore = new HighScoreClass(this);
+        this.highscore.checkHighScore("Mary", 24);
+        this.highscore.checkHighScore("Leonor", 10);
+        this.highscore.checkHighScore("Pepe", 80);
+        this.highscore.checkHighScore("Antonia", 58);
+        this.highscore.checkHighScore("Gonzalo", 15);
+        this.highscore.checkHighScore("Rosa", 5);
+        this.highscore.checkHighScore("Leonor", 20);
 
-        //this.checkHighScore(player1T.value, player1.lifeBar.kills);
+        const next = {
+            origin: 'center',
+            x: 400,
+            y: 540,
+            text: 'Press any key to continue',
+            style: {
+                fontFamily: 'estilo',
+                color: '#ffffff',
+                fontSize: 20,
+                textAlign: 'center',
+                justifyContent: 'center',
+                class: 'animacion'
+            }
+        }
+        this.continue = this.make.text(next);
 
+        document.addEventListener('keydown', ()=>{
+            this.scene.start('HighScoresScreen');
+        })
         
     }
     update(time, date)
     {
-
+        /*
+        this.time.delayedCall(1000, () => {
+            this.continue.setVisible(false);
+            this.time.delayedCall(1000, () => {
+                this.continue.setVisible(true);
+            });
+        });*/
+        
+        
     }
-
+    /*
     //SCORES
     //Guardar Score
     checkHighScore(name, score)
@@ -1792,7 +1831,7 @@ class BorradorVictoria extends Phaser.Scene {
         //finalScore.innerText=mostRecentScore;
 
         //Mirar el valor mas peque de la lista
-        const lowestScore = highScores[MAX_HIGH_SCORES-1]?.player1K??0;
+        const lowestScore = highScores[MAX_HIGH_SCORES-1]?.score??0;
         if(score > lowestScore)
         {
             this.saveHighScores(name, score, highScores);
@@ -1827,7 +1866,7 @@ class BorradorVictoria extends Phaser.Scene {
 
         highScoresList.innerHTML = highScores.map((score) => `<li>${score.score}-${score.name}`).join("");
         console.log(highScoresList);
-    }
+    }*/
     
 }
 
@@ -1840,5 +1879,31 @@ class HighScoresScreen extends Phaser.Scene{
     {
         //Background
         this.load.image("bg", "assets/pantallas/highScores.png");
+    }
+    create()
+    {
+        this.add.image(400, 300, 'bg');
+
+        var ny = 190;
+        const type = {
+            origin: 'center',
+            x: 200,
+            style: {
+                fontFamily: 'estilo',
+                color: '#000000',
+                fontSize: 25,
+                fontStyle: 'bold',
+                textAlign: 'center',
+                justifyContent: 'center'
+            }
+        }
+
+        const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+        for(var i = 0; i < highScores.length; i++)
+        {
+            this.make.text(type).setText(highScores[i].name).setPosition(200, ny);
+            ny = ny+70;
+        }
     }
 }

@@ -1197,8 +1197,6 @@ class ResultadoDerrota extends Phaser.Scene {
         }
         this.make.text(confN).setText(player1T.value); 
         this.make.text(confN).setText(player2T.value).setPosition(500, 280);
-        //this.make.text(confN).setText(player1T.text); 
-        //this.make.text(confN).setText(player2T.text).setPosition(500, 270);
         
         //Kills
         const confKills = {
@@ -1233,7 +1231,7 @@ class ResultadoDerrota extends Phaser.Scene {
         
 
         //Salir
-        this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
+        //this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
         this.marcoOk = this.add.image(400, 450, 'marco').setVisible(false);
         this.marcoOk.scale = 1.2;
 
@@ -1259,12 +1257,12 @@ class ResultadoDerrota extends Phaser.Scene {
             400, 278).setFontSize(16).setVisible(false);
         //warning
         //x
-        this.exit2 = this.add.sprite(625, 185, "exit").setVisible(false);
-        this.exit2.scale = 0.6;
+        //this.exit2 = this.add.sprite(625, 185, "exit").setVisible(false);
+        //this.exit2.scale = 0.6;
         //yes y no
         this.yes = this.add.sprite(300, 350, 'yes').setVisible(false);
         this.no = this.add.sprite(500, 350, 'no').setVisible(false);
-
+        /*
         //FUNCIONALIDAD
         this.salir.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -1310,7 +1308,7 @@ class ResultadoDerrota extends Phaser.Scene {
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.salir.setInteractive();
-        })
+        })*/
         //yes
         this.yes.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -1340,6 +1338,32 @@ class ResultadoDerrota extends Phaser.Scene {
             document.body.style.cursor = "auto";
             this.scene.start('PantallaInicio');
         })
+        
+        //SCORES
+        this.guardarHS1 = new HighScoreClass(this);
+        this.guardarHS1.checkHighScore(player1T.value, player1.lifeBar.kills);
+        this.guardarHS1.checkHighScore(player2T.value, player2.lifeBar.kills);
+
+        const next = {
+            origin: 'center',
+            x: 400,
+            y: 540,
+            text: 'Press any key to continue',
+            style: {
+                fontFamily: 'estilo',
+                color: '#ffffff',
+                fontSize: 20,
+                textAlign: 'center',
+                justifyContent: 'center',
+                class: 'animacion'
+            }
+        }
+        this.continue = this.make.text(next);
+
+        document.addEventListener('keydown', ()=>{
+            this.scene.start('HighScoresScreen');
+        })
+        
 
     }
     update(time, date)
@@ -1439,10 +1463,10 @@ class ResultadoVictoria extends Phaser.Scene {
             }
         }
         this.make.text(confnKills).setText(player1.lifeBar.kills); 
-        this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 390); 
+        this.make.text(confnKills).setText(player2.lifeBar.kills).setPosition(500, 340); 
 
         //Salir
-        this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
+        //this.salir = this.add.sprite(400, 450, "aceptar").setInteractive();
         this.marcoOk = this.add.image(400, 450, 'marco').setVisible(false);
         this.marcoOk.scale = 1.2;
 
@@ -1456,7 +1480,7 @@ class ResultadoVictoria extends Phaser.Scene {
                 color: '#000000',
                 fontSize: 25,
                 textAlign: 'center',
-                justifyContent: 'center',
+                justifyContent: 'center'
             }
         }
         this.pestaña = this.add.image(400, 300, 'aviso').setVisible(false);
@@ -1465,13 +1489,15 @@ class ResultadoVictoria extends Phaser.Scene {
                 400, 230).setFontSize(25).setVisible(false);
         //warning
         //x
-        this.exit2 = this.add.sprite(625, 185, "exit").setVisible(false);
-        this.exit2.scale = 0.6;
+        
+        //this.exit2 = this.add.sprite(625, 185, "exit").setVisible(false);
+        //this.exit2.scale = 0.6;
         //yes y no
         this.yes = this.add.sprite(300, 350, 'yes').setVisible(false);
         this.no = this.add.sprite(500, 350, 'no').setVisible(false);
 
         //FUNCIONALIDAD
+        /*
         this.salir.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
             this.marcoOk.setVisible(true);
@@ -1514,7 +1540,7 @@ class ResultadoVictoria extends Phaser.Scene {
             this.yes.setVisible(false).disableInteractive();
             this.no.setVisible(false).disableInteractive();
             this.salir.setInteractive();
-        })
+        })*/
         //yes
         this.yes.on("pointerover", ()=>{
             document.body.style.cursor = "pointer";
@@ -1551,8 +1577,29 @@ class ResultadoVictoria extends Phaser.Scene {
         })
 
         //SCORES
-        this.guardarHS1 = new HighScoreClass(player1T.value, player1.lifeBar.kills);
-        this.guardarHS1.checkHighScore();
+        this.guardarHS1 = new HighScoreClass(this);
+        this.guardarHS1.checkHighScore(player1T.value, player1.lifeBar.kills);
+        this.guardarHS1.checkHighScore(player2T.value, player2.lifeBar.kills);
+
+        const next = {
+            origin: 'center',
+            x: 400,
+            y: 540,
+            text: 'Press any key to continue',
+            style: {
+                fontFamily: 'estilo',
+                color: '#ffffff',
+                fontSize: 20,
+                textAlign: 'center',
+                justifyContent: 'center',
+                class: 'animacion'
+            }
+        }
+        this.continue = this.make.text(next);
+
+        document.addEventListener('keydown', ()=>{
+            this.scene.start('HighScoresScreen');
+        })
     }
     update(time, date)
     {
@@ -1776,13 +1823,17 @@ class BorradorVictoria extends Phaser.Scene {
         //this.guardarHS2 = new HighScoreClass();
         //this.guardarHS1.checkHighScore(this.player2T, this.player2K);
         this.highscore = new HighScoreClass(this);
-        this.highscore.checkHighScore("Mary", 24);
-        this.highscore.checkHighScore("Leonor", 10);
+        this.highscore.checkHighScore(this.player1T, this.player1K);
+        
+
+        /*
         this.highscore.checkHighScore("Pepe", 80);
         this.highscore.checkHighScore("Antonia", 58);
+        this.highscore.checkHighScore("Mary", 24);
         this.highscore.checkHighScore("Gonzalo", 15);
+        this.highscore.checkHighScore("Leonor", 10); --> 20
         this.highscore.checkHighScore("Rosa", 5);
-        this.highscore.checkHighScore("Leonor", 20);
+        */
 
         const next = {
             origin: 'center',
@@ -1878,11 +1929,11 @@ class HighScoresScreen extends Phaser.Scene{
     preload()
     {
         //Background
-        this.load.image("bg", "assets/pantallas/highScores.png");
+        this.load.image("highsc", "assets/pantallas/highScores.png");
     }
     create()
     {
-        this.add.image(400, 300, 'bg');
+        this.add.image(400, 300, 'highsc');
 
         var ny = 190;
         const type = {
@@ -1897,13 +1948,26 @@ class HighScoresScreen extends Phaser.Scene{
                 justifyContent: 'center'
             }
         }
+        let resaltar = this.add.graphics({
+            fillStyle: {
+                color: 0xffff00, //color barra de cargar (CAMBIAR)
+                alpha: 0.5,
+                padding: 0
+
+            }
+        })
+        //resaltarMJ.fillRect(46, 360, 705, 35);
 
         const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
         for(var i = 0; i < highScores.length; i++)
         {
             this.make.text(type).setText(highScores[i].name).setPosition(200, ny);
-            ny = ny+70;
+            //if(highScores[i].name==player1T.value) this.n1 = resaltar.fillRect(46, ny, 695, 35);
+            this.make.text(type).setText(highScores[i].score).setPosition(600, ny);
+            ny = ny+60;
         }
+
+        //Botones
     }
 }

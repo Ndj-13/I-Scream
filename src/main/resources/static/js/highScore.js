@@ -39,7 +39,7 @@ class HighScoreClass {
         {
             this.notificar();
             this.saveNewHighScores(name, score, highScores);
-            this.showHighScores();
+            //this.showHighScores();
         }else{
             var i = 0;
             while(i < highScores.length)
@@ -52,9 +52,10 @@ class HighScoreClass {
                     {
                         this.notificar(); //notificar de nuevo record
                         this.updateAHighScores(i, score, highScores);
-                        this.showHighScores();
+                        //this.showHighScores();
                     }
                     else i++; console.log("puntuacion del jugador es menor");
+                    return;
                 } else i++;
             }
             if(i == highScores.length) //se ha terminado de recorrer el bucle: no esta en la lista
@@ -64,7 +65,7 @@ class HighScoreClass {
                 {
                     this.notificar();
                     this.saveNewHighScores(name, score, highScores);
-                    this.showHighScores();
+                    //this.showHighScores();
                 }
             }
         }
@@ -96,14 +97,17 @@ class HighScoreClass {
         //Save to local
         localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));    
     }
-    updateAHighScores(pos, score, highScores)
+    updateAHighScores(pos, newscore, highScores)
     {
-        const data = {
-            score: score
-        }
         console.log("actualizando");
         
-        highScores[pos].setItem(data.score, JSON.stringify(score));
+        highScores[pos].score = newscore;
+
+        //Sort the list
+        highScores.sort((a,b) => b.score - a.score);
+
+        //Select new list
+        //highScores.splice(MAX_HIGH_SCORES);
 
         //Save to local
         localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));    
